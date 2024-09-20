@@ -15,6 +15,7 @@ const Chatroom = (props) => {
     const agentUsername = 'AGENT';
     const messageEl = useRef(null);
     const input = useRef(null);
+    let translatedMessage;
     
     function getKeyByValue(object) {
         let obj = languageTranslate.find(o => o.contactId === currentContactId[0]);
@@ -69,7 +70,7 @@ const Chatroom = (props) => {
         console.log(newMessage);
         let translatedMessageAPI = await translateTextAPI(newMessage, 'en', destLang.lang); // Provide a custom terminology created outside of this deployment
         //let translatedMessageAPI = await translateTextAPI(newMessage, 'en', destLang.lang, ['connectChatTranslate']); // Provide a custom terminology created outside of this deployment
-        let translatedMessage = translatedMessageAPI.TranslatedText
+        translatedMessage = translatedMessageAPI.TranslatedText
 
         console.log(` Original Message: ` + newMessage + `\n Translated Message: ` + translatedMessage);
         // create the new message to add to Chats.
@@ -118,6 +119,12 @@ const Chatroom = (props) => {
                         )
                     }
                 </ul>
+                {/* Preview of the translated message before sending */}
+                {translatedMessage && (
+                    <div className="translated-preview">
+                    <strong>Preview: </strong>{translatedMessage}
+                    </div>
+                )}
                 <form className="input" onSubmit={handleSubmit} >
                     <input
                           ref={input}
